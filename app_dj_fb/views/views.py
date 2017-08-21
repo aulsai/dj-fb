@@ -17,7 +17,7 @@ def _bindFBUserModel(data):
         "gender": data['gender'],
         "locale": data['locale'],
         "link": data['link'],
-        "img_cover": data['cover']['source'],
+        "img_cover": data['cover']['source'] if data.get('cover') is not None else None,
         "img_profile": data['picture']['data']['url']
     }
 

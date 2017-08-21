@@ -10,14 +10,14 @@ class FBUserModel(models.Model):
     """    
     ext_id = models.CharField(max_length=255, primary_key=True)
     name = models.CharField(max_length=255)
-    gender = models.CharField(max_length=50)
-    locale = models.CharField(max_length=50)
-    timezone = models.IntegerField()
-    link = models.URLField()
+    gender = models.CharField(max_length=50, null=True, blank=True)
+    locale = models.CharField(max_length=50, null=True, blank=True)
+    timezone = models.IntegerField(null=True, blank=True)
+    link = models.URLField(null=True, blank=True)
 
-    age_min = models.IntegerField()
-    img_profile = models.URLField()
-    img_cover = models.URLField()
+    age_min = models.IntegerField(null=True, blank=True)
+    img_profile = models.URLField(null=True, blank=True)
+    img_cover = models.URLField(null=True, blank=True)
 
 
 class FBUserVisitHistory(models.Model):

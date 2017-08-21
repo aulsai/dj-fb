@@ -121,7 +121,7 @@
             console.log("RES:", res);
 
             $('#img-profile').attr('src', res.picture.data.url);
-            $('#img-cover').attr('src', res.cover.source);
+            $('#img-cover').attr('src', res.cover? res.cover.source: null);
             $('#card-name').html(res.name);
             $('#card-age').html(res.age_range.min + "+");
             $('#card-gender').html(res.gender);
