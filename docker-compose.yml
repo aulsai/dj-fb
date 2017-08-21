@@ -1,12 +1,15 @@
 version: '2'
 services:
-  #db:
-  #  image: postgres
-  #  restart: always
-  #  volumes:
-  #    - ./data:/var/lib/postgresql/data
-  #  ports:
-  #    - "5432:5432"
+  db:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+      
   web:
     image: my-django-1.6:1.0
     command: ./entry-point.sh
@@ -15,5 +18,3 @@ services:
       - .:/code
     ports:
       - "80:8000"
-   # depends_on:
-   #   - db

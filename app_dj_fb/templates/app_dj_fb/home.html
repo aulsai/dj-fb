@@ -1,0 +1,250 @@
+{% extends 'app_dj_fb/base.html' %} {% load i18n %} {% block content %} {% get_current_language as LANGUAGE_CODE %}
+
+<div class="row">
+    <div class="col-md">
+
+        <!--fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
+        </fb:login-button-->
+
+        <div class="jumbotron mt-3">
+            <div class="text-center" style="width: 50px; height: 50px;">
+                <img class="card-img-top rounded-circle" id="img-profile" />
+            </div>
+            <h1 class="display-3" id="status">{% trans "Hello, world!" %}</h1>
+            <span id="span-thank-visit" style="display: None;">
+                <hr class="my-4">
+                <p class="lead text-center">
+                    <b>{% trans "Thanks for visiting us" %}</b>
+                </p>
+                <h1 class="text-center" id="text-visit-time">
+                    1
+                </h1>
+                <p class="lead text-center">
+                    <b>{% trans "times" %}</b>
+                </p>
+            </span>
+            <p class="lead">
+                {% trans "This is a simple app that you can login with your Facebook Account." %}
+            </p>
+
+            <p class="lead">
+                <hr class="my-4">
+                <div class="fb-login-button" onlogin="checkLoginState();" data-max-rows="1" data-size="medium" data-button-type="continue_with"
+                    data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="true"></div>
+            </p>
+        </div>
+
+
+
+        <button class="btn btn-danger" onclick="fbLogout()">Logout</button>
+
+
+
+        <div class="fb-share-button" data-href="https://localhost/" data-layout="button_count" data-size="large" data-mobile-iframe="true">
+            <a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">
+                    Share
+                </a>
+        </div>
+    </div>
+    <div class="col-md">
+        <span class="ml-3 mr-3 text-center">
+            <h2>{% trans "What do I know about you?" %}</h2>
+        </span>
+        <div class="card ml-3 mr-3 mb-3">
+            <img class="card-img-top border border-dark bg-light" id="img-cover" alt="Your cover photo">
+        </div>
+        <div class="card-columns">
+
+            <div class="card ml-3 mr-3">
+                <blockquote class="blockquote mb-0 card-body">
+                    <p class="font-weight-bold" id="card-name">...</p>
+                    <footer class="blockquote-footer">
+                        <small class="text-muted">
+                            <cite title="Source Title">{% trans "Your name" %}</cite>
+                        </small>
+                    </footer>
+                </blockquote>
+            </div>
+           
+            <div class="card text-center ml-3 mr-3">
+                <div class="card-body">
+                    <h5 class="card-title">{% trans "Gender" %}</h5>
+                    <p class="card-text text-capitalize" id="card-gender">...</p>
+                </div>
+            </div>
+
+            <div class="card text-center ml-3 mr-3">
+                <div class="card-body">
+                    <h5 class="card-title">{% trans "Age" %}</h5>
+                    <p class="card-text" id="card-age">...</p>
+                </div>
+            </div>
+
+            <div class="card text-center ml-3 mr-3">
+                <div class="card-body">
+                    <h5 class="card-title">{% trans "Your timezone" %}</h5>
+                    <p class="card-text" id="card-time">...</p>
+                </div>
+            </div>
+
+            <div class="card ml-3 mr-3 text-sm-center">
+                <blockquote class="blockquote mb-0 card-body">
+                    <p class="">
+                        <a id="card-link">{% trans "Go to Your Facebook" %}</a>
+                    </p>
+                    <footer class="blockquote-footer">
+                        <small class="text-muted">
+                                {% trans "Your" %} <cite title="Source Title">{% trans "FB link" %}</cite>
+                            </small>
+                    </footer>
+                </blockquote>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+</div>
+
+{% csrf_token %} {% endblock %} {% block scripts %}
+<script>
+    // This is called with the results from from FB.getLoginStatus().
+    function statusChangeCallback(response) {
+        console.log('statusChangeCallback');
+        console.log(response);
+
+        FB.api(`/me`, {
+            fields: "picture,age_range,cover,devices,gender,first_name,last_name,middle_name,name,meeting_for,political,relationship_status,timezone,link,locale,location,languages"
+        }, function (res) {
+            console.log("RES:", res);
+
+            $('#img-profile').attr('src', res.picture.data.url);
+            $('#img-cover').attr('src', res.cover.source);
+            $('#card-name').html(res.name);
+            $('#card-age').html(res.age_range.min + "+");
+            $('#card-gender').html(res.gender);
+            $('#card-time').html(res.timezone);
+            $('#card-link').attr('href', res.link);
+
+
+
+            document.getElementById('status').innerHTML =
+                'Hello, ' + res.name + '!';
+
+            saveUser(res);
+
+        });
+
+        // The response object is returned with a status field that lets the
+        // app know the current login status of the person.
+        // Full docs on the response object can be found in the documentation
+        // for FB.getLoginStatus().
+        if (response.status === 'connected') {
+            // Logged into your app and Facebook.
+            //testAPI();
+            $('.fb-login-button').hide();
+        } else {
+            // The person is not logged into your app or we are unable to tell.
+            document.getElementById('status').innerHTML = 'Please log ' +
+                'into this app.';
+        }
+    }
+
+
+    function saveUser(userData) {
+
+        var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+
+        $.ajax({
+                method: "POST",
+                contentType: "application/json",
+                url: "/api/user/create/",
+                data: JSON.stringify(userData)
+            })
+            .done(function (msg) {
+                $('#text-visit-time').html(msg)
+                $('#span-thank-visit').show(800);
+            });
+
+    }
+
+    function getUserCurrentTime(tz) {
+
+    }
+
+    // This function is called when someone finishes with the Login
+    // Button.  See the onlogin handler attached to it in the sample
+    // code below.
+    function checkLoginState() {
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+    }
+
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '1421854471195781',
+            cookie: true, // enable cookies to allow the server to access 
+            // the session
+            xfbml: true, // parse social plugins on this page
+            version: 'v2.8' // use graph api version 2.8
+        });
+
+        // Now that we've initialized the JavaScript SDK, we call 
+        // FB.getLoginStatus().  This function gets the state of the
+        // person visiting this page and can return one of three states to
+        // the callback you provide.  They can be:
+        //
+        // 1. Logged into your app ('connected')
+        // 2. Logged into Facebook, but not your app ('not_authorized')
+        // 3. Not logged into Facebook and can't tell if they are logged into
+        //    your app or not.
+        //
+        // These three cases are handled in the callback function.
+
+
+
+        $('.fb-share-button').hide();
+
+        $('#span-thank-visit').hide();
+
+        FB.getLoginStatus(function (response) {
+            statusChangeCallback(response);
+        });
+
+    };
+
+    function fbLogout() {
+        FB.logout(function (response) {
+            // Person is now logged out
+            window.location = "/"
+        });
+    }
+
+
+
+    // Load the SDK asynchronously
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/{{ LANGUAGE_CODE }}_DE/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+{% endblock %}

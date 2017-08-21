@@ -1,0 +1,79 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-21 06:40+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app_dj_fb/templates/app_dj_fb/base.html:22
+msgid "Home"
+msgstr "Zuhause"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:13
+msgid "Hello, world!"
+msgstr "Hallo, Welt!"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:17
+msgid "Thanks for visiting us"
+msgstr "Danke für den Besuch uns"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:23
+msgid "times"
+msgstr "mal"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:27
+msgid "This is a simple app that you can login with your Facebook Account."
+msgstr "Dies ist eine einfache App, die Sie mit Ihrem Facebook Account anmelden können."
+
+#: app_dj_fb/templates/app_dj_fb/home.html:51
+msgid "What do I know about you?"
+msgstr "Was weiß ich über dich?"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:63
+msgid "Your name"
+msgstr "Ihren Name"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:71
+msgid "Gender"
+msgstr "Das Geschlecht"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:78
+msgid "Age"
+msgstr "Das Alter"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:85
+msgid "Your timezone"
+msgstr "Ihre Zeitzone"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:93
+msgid "Go to Your Facebook"
+msgstr "Zu Ihrem Facebook"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:97
+msgid "Your"
+msgstr "Ihr"
+
+#: app_dj_fb/templates/app_dj_fb/home.html:97
+msgid "FB link"
+msgstr ""
+
+#: proj_dj_fb/settings.py:103
+msgid "German"
+msgstr "Deutsch"
+
+#: proj_dj_fb/settings.py:104
+msgid "English"
+msgstr "Englisch"
